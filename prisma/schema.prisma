@@ -1,0 +1,202 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  ESTABLISHMENT
+  USER
+}
+
+enum EstablishmentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SUSPENDED
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PREPARING
+  READY
+  DELIVERED
+  CANCELLED
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  phone     String?
+  role      UserRole @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relacionamentos
+  establishment Establishment?
+  orders        Order[]
+
+  @@map("users")
+}
+
+model Establishment {
+  id                    String               @id @default(cuid())
+  name                  String
+  description           String?
+  address               String?
+  zipCode               String?
+  city                  String?
+  state                 String?
+  phone                 String?
+  logoUrl               String?
+  status                EstablishmentStatus  @default(PENDING)
+  hasDelivery           Boolean              @default(true)
+  deliveryFee           Float?               @default(0)
+  minDeliveryOrder      Float?               @default(0)
+  deliveryRadius        Float?               @default(5) // em km
+  userId                String               @unique
+  categories            Category[]
+  products              Product[]
+  orders                Order[]
+  events                Event[]
+  operatingHours        OperatingHours[]
+  deliveryHours         DeliveryHours[]
+  createdAt             DateTime             @default(now())
+  updatedAt             DateTime             @updatedAt
+
+  // Relacionamento
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("establishments")
+}
+
+model Category {
+  id              String        @id @default(cuid())
+  name            String
+  description     String?
+  establishment   Establishment @relation(fields: [establishmentId], references: [id], onDelete: Cascade)
+  establishmentId String
+  products        Product[]
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([establishmentId])
+}
+
+model Product {
+  id              String        @id @default(cuid())
+  name            String
+  description     String?
+  price           Float
+  imageUrl        String?
+  isActive        Boolean       @default(true)
+  isKosher        Boolean       @default(false)
+  order           Int           @default(0)
+  category        Category      @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId      String
+  establishment   Establishment @relation(fields: [establishmentId], references: [id], onDelete: Cascade)
+  establishmentId String
+  orderItems      OrderItem[]
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt @default(now())
+
+  @@index([categoryId])
+  @@index([establishmentId])
+  @@map("products")
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  userId          String
+  establishmentId String
+  status          OrderStatus @default(PENDING)
+  total           Float
+  deliveryAddress String
+  notes           String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  // Relacionamentos
+  user          User          @relation(fields: [userId], references: [id])
+  establishment Establishment @relation(fields: [establishmentId], references: [id])
+  items         OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String @id @default(cuid())
+  orderId   String
+  productId String
+  quantity  Int
+  price     Float
+
+  // Relacionamentos
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+
+  @@map("order_items")
+}
+
+model Event {
+  id              String   @id @default(cuid())
+  establishmentId String
+  title           String
+  description     String?
+  date            DateTime
+  price           Float    @default(0)
+  imageUrl        String?
+  isActive        Boolean  @default(true)
+  maxParticipants Int?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relacionamentos
+  establishment Establishment @relation(fields: [establishmentId], references: [id], onDelete: Cascade)
+
+  @@map("events")
+}
+
+model OperatingHours {
+  id              String        @id @default(cuid())
+  establishmentId String
+  dayOfWeek       Int           // 0 = domingo, 1 = segunda, ..., 6 = sábado
+  openTime        String        // formato HH:mm
+  closeTime       String        // formato HH:mm
+  isOpen          Boolean       @default(true)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  // Relacionamento
+  establishment Establishment @relation(fields: [establishmentId], references: [id], onDelete: Cascade)
+
+  @@unique([establishmentId, dayOfWeek])
+  @@map("operating_hours")
+}
+
+model DeliveryHours {
+  id              String        @id @default(cuid())
+  establishmentId String
+  dayOfWeek       Int           // 0 = domingo, 1 = segunda, ..., 6 = sábado
+  openTime        String        // formato HH:mm
+  closeTime       String        // formato HH:mm
+  isOpen          Boolean       @default(true)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  // Relacionamento
+  establishment Establishment @relation(fields: [establishmentId], references: [id], onDelete: Cascade)
+
+  @@unique([establishmentId, dayOfWeek])
+  @@map("delivery_hours")
+} 
