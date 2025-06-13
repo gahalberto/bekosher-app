@@ -68,12 +68,16 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    // Definir cookie
-    response.cookies.set('auth-token', token, {
+    // Definir cookie com configurações atualizadas
+    response.cookies.set({
+      name: 'auth-token',
+      value: token,
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
+      path: '/',
       maxAge: 60 * 60 * 24 * 7, // 7 dias
+      domain: process.env.NODE_ENV === 'production' ? '.bekosher.com.br' : undefined
     })
 
     return response
