@@ -26,10 +26,10 @@ export default function Header() {
             <Link href="/" className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900">
               Início
             </Link>
-            <Link href="/estabelecimentos" className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-900">
+            <Link href="/establishment" className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-900">
               Estabelecimentos
             </Link>
-            <Link href="/admin/login" className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-900">
+            <Link href="/establishment/login" className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 hover:text-gray-900">
               Entrar
             </Link>
           </nav>

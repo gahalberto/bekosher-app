@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
+import BeKosherLogo from "@/components/ui/BeKosherLogo"
 
 export default function EstablishmentLoginPage() {
   const [email, setEmail] = useState('')
@@ -86,6 +87,9 @@ export default function EstablishmentLoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-blue-50 p-4">
       <div className="w-full max-w-md space-y-6">
+        <div className="flex justify-center mb-8">
+          <BeKosherLogo width={200} height={77} />
+        </div>
         <Card>
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-bold text-purple-600">BeKosher Estabelecimento</CardTitle>

@@ -6,25 +6,6 @@ import Link from "next/link"
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white">
-      {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center">
-              <BeKosherLogo width={180} height={60} />
-            </div>
-            <div className="flex space-x-4">
-              <Button variant="outline" asChild>
-                <Link href="/establishment/login">Login Estabelecimento</Link>
-              </Button>
-              <Button className="bg-purple-600 hover:bg-purple-700" asChild>
-                <Link href="/admin/login">Login Admin</Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
-
       {/* Hero Section */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
