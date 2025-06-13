@@ -37,10 +37,7 @@ export default function EstablishmentLoginPage() {
       const data = await response.json()
 
       if (response.ok) {
-        // Aguardar um pouco para garantir que o cookie seja definido
-        setTimeout(() => {
-          window.location.href = '/establishment'
-        }, 100)
+        router.push('/establishment')
       } else {
         setError(data.message || 'Erro ao fazer login')
       }
