@@ -21,9 +21,21 @@ export async function signJWTEdge(payload: CustomJWTPayload): Promise<string> {
 export async function verifyJWTEdge(token: string): Promise<CustomJWTPayload | null> {
   try {
     const { payload } = await jwtVerify(token, secret)
-    return payload as unknown as CustomJWTPayload
+    
+    // Verificar se o payload tem os campos necessários
+    if (!payload.userId || !payload.email || !payload.role) {
+      console.error('❌ JWT inválido: payload incompleto')
+      return null
+    }
+
+    return {
+      userId: payload.userId as string,
+      email: payload.email as string,
+      role: payload.role as 'ADMIN' | 'ESTABLISHMENT' | 'USER',
+      establishmentId: payload.establishmentId as string | undefined
+    }
   } catch (error) {
-    console.log('❌ JWT inválido (Edge):', error instanceof Error ? error.message : 'Token corrompido')
+    console.error('❌ Erro na verificação do JWT:', error instanceof Error ? error.message : 'Token corrompido')
     return null
   }
 } 
