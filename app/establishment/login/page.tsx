@@ -37,7 +37,7 @@ export default function EstablishmentLoginPage() {
       const data = await response.json()
 
       if (response.ok) {
-        router.push('/establishment')
+        window.location.href = '/establishment'
       } else {
         setError(data.message || 'Erro ao fazer login')
       }
