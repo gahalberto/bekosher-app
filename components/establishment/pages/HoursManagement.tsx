@@ -28,9 +28,9 @@ interface Establishment {
   id: string
   name: string
   hasDelivery: boolean
-  deliveryFee?: number
-  minDeliveryOrder?: number
-  deliveryRadius?: number
+  deliveryFee: number | null
+  minDeliveryOrder: number | null
+  deliveryRadius: number | null
   operatingHours: OperatingHours[]
   deliveryHours: DeliveryHours[]
 }

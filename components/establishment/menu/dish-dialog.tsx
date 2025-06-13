@@ -43,10 +43,10 @@ interface DishDialogProps {
   dish?: {
     id: string
     name: string
-    description?: string
+    description: string | null
     price: number
     categoryId: string
-    imageUrl?: string
+    imageUrl: string | null
   }
   onSuccess?: () => void
 }
@@ -59,7 +59,7 @@ export function DishDialog({
   onSuccess,
 }: DishDialogProps) {
   const { toast } = useToast()
-  const [imageUrl, setImageUrl] = useState<string | undefined>(dish?.imageUrl)
+  const [imageUrl, setImageUrl] = useState<string | null>(dish?.imageUrl || null)
 
   const form = useForm<DishFormValues>({
     resolver: zodResolver(dishFormSchema),
@@ -88,7 +88,7 @@ export function DishDialog({
         price: "",
         categoryId: "",
       })
-      setImageUrl(undefined)
+      setImageUrl(null)
     }
   }, [dish, form])
 
@@ -96,7 +96,7 @@ export function DishDialog({
   useEffect(() => {
     if (!open) {
       form.reset()
-      setImageUrl(undefined)
+      setImageUrl(null)
     }
   }, [open, form])
 

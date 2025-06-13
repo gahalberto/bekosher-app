@@ -38,13 +38,11 @@ export async function POST(request: NextRequest) {
         establishment: {
           create: {
             name: 'Novo Estabelecimento',
-            email,
             phone: '',
             address: '',
             city: '',
             state: '',
             zipCode: '',
-            cnpj: '',
             status: 'PENDING'
           }
         }

@@ -21,22 +21,23 @@ import {
 interface Category {
   id: string
   name: string
-  description?: string
+  description: string | null
   products: Product[]
 }
 
 interface Product {
   id: string
   name: string
-  description?: string
+  description: string | null
   price: number
   categoryId: string
-  imageUrl?: string
+  imageUrl: string | null
 }
 
 interface MenuProps {
   establishment: {
     id: string
+    description: string | null
     categories: Category[]
   }
 }

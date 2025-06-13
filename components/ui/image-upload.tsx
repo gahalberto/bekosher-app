@@ -3,12 +3,12 @@ import { Button } from "@/components/ui/button"
 import { ImageIcon, X } from "lucide-react"
 
 interface ImageUploadProps {
-  value?: string
-  onChange: (value: string) => void
+  value?: string | null
+  onChange: (value: string | null) => void
 }
 
 export function ImageUpload({ value, onChange }: ImageUploadProps) {
-  const [preview, setPreview] = useState<string | undefined>(value)
+  const [preview, setPreview] = useState<string | null>(value || null)
 
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -36,8 +36,8 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
   }
 
   const handleRemove = () => {
-    setPreview(undefined)
-    onChange("")
+    setPreview(null)
+    onChange(null)
   }
 
   return (

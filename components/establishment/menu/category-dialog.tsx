@@ -28,7 +28,7 @@ interface CategoryDialogProps {
   category?: {
     id: string
     name: string
-    description?: string
+    description: string | null
   }
   onSuccess?: () => void
 }
