@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server"
 import prismadb from "@/lib/prismadb"
 
+export const dynamic = 'force-dynamic'
+
 // GET /api/establishments - Listar estabelecimentos disponíveis
 export async function GET(req: NextRequest) {
   try {
